@@ -633,9 +633,14 @@
             if exists("g:ctrlp_user_command")
                 unlet g:ctrlp_user_command
             endif
+            if $SHELL =~ 'fish'
+                let s:ctrlp_shell_and = 'and;'
+            else
+                let s:ctrlp_shell_and = '&&'
+            endif
             let g:ctrlp_user_command = {
                 \ 'types': {
-                    \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                    \ 1: ['.git', 'cd %s ' . s:ctrlp_shell_and . ' git ls-files . --cached --exclude-standard --others'],
                     \ 2: ['.hg', 'hg --cwd %s locate -I .'],
                 \ },
                 \ 'fallback': s:ctrlp_fallback
